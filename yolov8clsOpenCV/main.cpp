@@ -1,10 +1,7 @@
 #include <iostream>
 #include <opencv2/opencv.hpp>
-#include <chrono>
-#include <thread>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
-#include <cpp_redis/cpp_redis>
 #include "cpp_ai_utils.h"
 
 namespace py = pybind11;
