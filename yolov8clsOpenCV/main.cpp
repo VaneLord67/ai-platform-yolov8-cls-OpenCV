@@ -223,6 +223,7 @@ std::vector<ClsResult> main_func(int argc, char** argv) {
             // camera_stream process
             if (queueName != "") {
                 cppAiHelper.push_frame_to_redis(frame);
+                cppAiHelper.write_frame_to_video(frame);
 
                 std::stringstream ss;
                 ss << "{"
@@ -232,6 +233,7 @@ std::vector<ClsResult> main_func(int argc, char** argv) {
                     << "}";
 
                 cppAiHelper.push_str_to_redis(ss.str());
+                cppAiHelper.write_json_to_file(ss.str());
             }
         }
         break;
