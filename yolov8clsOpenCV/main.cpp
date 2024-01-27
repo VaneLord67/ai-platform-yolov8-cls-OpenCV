@@ -18,7 +18,7 @@ int main() {
     std::string imagePath = "E:/GraduationDesign/tensorrt-alpha/data/sailboat3.jpg";
     std::string modelPath = "E:/GraduationDesign/yolov8n-cls.onnx";
 
-    cv::Mat image = cv::imread(imagePath); // ¶ÁÈ¡Í¼Ïñ
+    cv::Mat image = cv::imread(imagePath); // è¯»å–å›¾åƒ
     if (image.empty()) {
         std::cerr << "Failed to read image!" << std::endl;
         return -1;
@@ -32,12 +32,12 @@ int main() {
     net.setInput(blob);
     cv::Mat output = net.forward();
 
-    // ÕÒµ½×î´óÖµ¼°ÆäÎ»ÖÃ
+    // æ‰¾åˆ°æœ€å¤§å€¼åŠå…¶ä½ç½®
     double minVal, maxVal;
     cv::Point minLoc, maxLoc;
     cv::minMaxLoc(output, &minVal, &maxVal, &minLoc, &maxLoc);
 
-    // Êä³ö×î´óÖµ¼°ÆäÎ»ÖÃ
+    // è¾“å‡ºæœ€å¤§å€¼åŠå…¶ä½ç½®
     std::cout << "Max Value: " << maxVal << std::endl;
     std::cout << "Max Value Location: " << maxLoc << std::endl;
     std::cout << "class_name:" << class_names[maxLoc.x] << std::endl;
@@ -64,12 +64,12 @@ ClsResult process_frame(cv::Mat& frame, cv::dnn::Net& net) {
     net.setInput(blob);
     cv::Mat output = net.forward();
 
-    // ÕÒµ½×î´óÖµ¼°ÆäÎ»ÖÃ
+    // æ‰¾åˆ°æœ€å¤§å€¼åŠå…¶ä½ç½®
     double minVal, maxVal;
     cv::Point minLoc, maxLoc;
     cv::minMaxLoc(output, &minVal, &maxVal, &minLoc, &maxLoc);
 
-    // Êä³ö×î´óÖµ¼°ÆäÎ»ÖÃ
+    // è¾“å‡ºæœ€å¤§å€¼åŠå…¶ä½ç½®
     /*std::cout << "Max Value: " << maxVal << std::endl;
     std::cout << "Max Value Location: " << maxLoc << std::endl;
     std::cout << "class_name:" << class_names[maxLoc.x] << std::endl;*/
@@ -160,7 +160,7 @@ std::vector<ClsResult> main_func(int argc, char** argv) {
         capture.open(cameraId);
         std::cout << "capture state: " << capture.isOpened() << std::endl;
         if (!capture.isOpened()) {
-            cppAiHelper.push_log_to_redis(u8"´ò¿ªÉãÏñÍ·Ê§°Ü£¡");
+            cppAiHelper.push_log_to_redis(u8"æ‰“å¼€æ‘„åƒå¤´å¤±è´¥ï¼");
         }
         cppAiHelper.init_video_writer(capture);
         break;
@@ -181,10 +181,10 @@ std::vector<ClsResult> main_func(int argc, char** argv) {
     switch (source)
     {
     case InputStream::IMAGE:
-        image = cv::imread(imagePath); // ¶ÁÈ¡Í¼Ïñ
+        image = cv::imread(imagePath); // è¯»å–å›¾åƒ
         if (image.empty()) {
             std::cerr << "Failed to read image!" << std::endl;
-            cppAiHelper.push_log_to_redis("¶ÁÈ¡Í¼ÏñÊ§°Ü!");
+            cppAiHelper.push_log_to_redis("è¯»å–å›¾åƒå¤±è´¥!");
             return clsResults;
         }
         clsResults.push_back(process_frame(image, net));
@@ -244,12 +244,12 @@ std::vector<ClsResult> main_func(int argc, char** argv) {
     //net.setInput(blob);
     //cv::Mat output = net.forward();
 
-    //// ÕÒµ½×î´óÖµ¼°ÆäÎ»ÖÃ
+    //// æ‰¾åˆ°æœ€å¤§å€¼åŠå…¶ä½ç½®
     //double minVal, maxVal;
     //cv::Point minLoc, maxLoc;
     //cv::minMaxLoc(output, &minVal, &maxVal, &minLoc, &maxLoc);
 
-    //// Êä³ö×î´óÖµ¼°ÆäÎ»ÖÃ
+    //// è¾“å‡ºæœ€å¤§å€¼åŠå…¶ä½ç½®
     ///*std::cout << "Max Value: " << maxVal << std::endl;
     //std::cout << "Max Value Location: " << maxLoc << std::endl;
     //std::cout << "class_name:" << class_names[maxLoc.x] << std::endl;*/
@@ -271,7 +271,11 @@ std::vector<ClsResult> main_func_wrapper(const std::vector<std::string>& strings
     return r;
 }
 
+#ifdef _WIN32
 PYBIND11_MODULE(app_yolo_cls, m) {
+#else
+PYBIND11_MODULE(libapp_yolo_cls, m) {
+#endif
     m.doc() = "pybind11 example plugin"; // optional module docstring
 
     //m.def("add", &add, "A function that adds two numbers");

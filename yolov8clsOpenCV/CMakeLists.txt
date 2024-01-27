@@ -4,7 +4,6 @@ project(app_yolo_cls)
 # 设置C++标准
 set(CMAKE_CXX_STANDARD 17)
 
-# 指定头文件路径
 include_directories(
     /home/vanelord/bysj/opencv/include
     /home/vanelord/bysj/opencv/world_build
@@ -29,16 +28,25 @@ include_directories(
     /home/vanelord/bysj/opencv/modules/video/include
     /home/vanelord/bysj/opencv/modules/videoio/include
     /home/vanelord/bysj/opencv/modules/world/include
+)
 
+include_directories(
+    /home/vanelord/bysj/cpp_redis/includes
+    /home/vanelord/bysj/cpp_redis/tacopie/includes
+    /home/vanelord/bysj/spdlog/include
     /home/vanelord/bysj/cpp_ai_utils/cpp_ai_utils
+)
 
+include_directories(
     /home/vanelord/anaconda3/envs/ai-platform/lib/python3.10/site-packages/pybind11/include
+    /home/vanelord/anaconda3/envs/ai-platform/include/python3.10
     /home/vanelord/anaconda3/envs/ai-platform/include
 )
 
 # 指定库路径
 link_directories(
     /home/vanelord/bysj/opencv/world_build/lib
+    /home/vanelord/bysj/cpp_redis/build/lib
     /home/vanelord/bysj/cpp_ai_utils/cpp_ai_utils/build
     /home/vanelord/anaconda3/envs/ai-platform/lib
 )
@@ -52,8 +60,10 @@ add_library(app_yolo_cls SHARED
 
 # 链接库
 target_link_libraries(app_yolo_cls
-    libopencv_world.so
-    libcpp_ai_utils.a
-    libpython3.so
-    libpython3.10.so
+    cpp_ai_utils
+    opencv_world
+    cpp_redis
+    tacopie
+    python3
+    python3.10
 )
