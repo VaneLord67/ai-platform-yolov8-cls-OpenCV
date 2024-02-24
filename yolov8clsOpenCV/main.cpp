@@ -14,41 +14,6 @@ struct ClsResult {
     double confidence;
 };
 
-int main() {
-    std::string imagePath = "E:/GraduationDesign/tensorrt-alpha/data/sailboat3.jpg";
-    std::string modelPath = "E:/GraduationDesign/yolov8n-cls.onnx";
-
-    cv::Mat image = cv::imread(imagePath); // 读取图像
-    if (image.empty()) {
-        std::cerr << "Failed to read image!" << std::endl;
-        return -1;
-    }
-
-    cv::dnn::Net net = cv::dnn::readNetFromONNX(modelPath);
-
-    //cv::Mat blob = cv::dnn::blobFromImage(image, 1.0, cv::Size(224, 224), cv::Scalar(), true, false);
-    cv::Mat blob = cv::dnn::blobFromImage(image, 1.0 / 255.0, cv::Size(224, 224), cv::Scalar(), false, false);
-
-    net.setInput(blob);
-    cv::Mat output = net.forward();
-
-    // 找到最大值及其位置
-    double minVal, maxVal;
-    cv::Point minLoc, maxLoc;
-    cv::minMaxLoc(output, &minVal, &maxVal, &minLoc, &maxLoc);
-
-    // 输出最大值及其位置
-    std::cout << "Max Value: " << maxVal << std::endl;
-    std::cout << "Max Value Location: " << maxLoc << std::endl;
-    std::cout << "class_name:" << class_names[maxLoc.x] << std::endl;
-
-    //std::cout << output << std::endl;
-
-    //getchar();
-
-    return 0;
-}
-
 enum class InputStream { IMAGE, VIDEO, CAMERA };
 
 ClsResult process_frame(cv::Mat& frame, cv::dnn::Net& net) {
@@ -147,7 +112,7 @@ std::vector<ClsResult> main_func(int argc, char** argv) {
         std::cout << "videoOutputJsonPath = " << videoOutputJsonPath << std::endl;
     }
     cpp_ai_utils::CppAiHelper cppAiHelper(logKey, queueName, stopSignalKey, 
-        videoOutputPath, videoProgressKey, videoOutputJsonPath);
+        videoOutputPath, videoProgressKey, videoOutputJsonPath, videoPath);
 
     cv::VideoCapture capture;
     switch (source)
